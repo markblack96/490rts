@@ -68,16 +68,21 @@ function redraw(datum) {
 }
 
 
+var xhttp = new XMLHttpRequest();
 
 // setInterval(function(), time_ms);
 d3.interval(function(){   
             // add or subtract based on value of Math.random()
             // if < 0.5 then -1, else 1
-            ds = Math.random() < 0.5 ? -1 : 1;
-            // if speed>0 and <32 add ds to speed, else add opposite of ds
-            speed += speed > 0 & speed < 32 ? ds : ds * -1;
-            
-            
-            console.log(speed);
+            // ds = Math.random() < 0.5 ? -1 : 1;
+            xhttp.onreadystatechange = function() {
+                if (!isNaN(parseInt(xhttp.responseText)) ) { 
+                    ds = parseInt(xhttp.responseText);
+                    speed += ds;
+                }   
+            }
+                
+            xhttp.open("GET", "http://127.0.0.1:5000/random", true);
+            xhttp.send();
             redraw(speed);
          }, 1000);
